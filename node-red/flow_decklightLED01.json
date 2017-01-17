@@ -1,0 +1,987 @@
+// this flow helps the deck light LED01
+
+[
+    {
+        "id": "1cdd1569.75bb5b",
+        "type": "comment",
+        "z": "d6f11351.3cf3",
+        "name": "LIghtbulb",
+        "info": "Name\n, On\n, Brightness\n, Hue\n, Saturation\n, Name",
+        "x": 421,
+        "y": 127,
+        "wires": []
+    },
+    {
+        "id": "aae941ae.6bc8c",
+        "type": "mqtt in",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Hue",
+        "qos": "2",
+        "broker": "fc200c31.558f3",
+        "x": 111,
+        "y": 47,
+        "wires": [
+            [
+                "68fbc56d.f34d2c"
+            ]
+        ]
+    },
+    {
+        "id": "92ce27f9.702cd8",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Hue",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 1131,
+        "y": 107,
+        "wires": []
+    },
+    {
+        "id": "e3219801.e43358",
+        "type": "mqtt in",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Saturation",
+        "qos": "2",
+        "broker": "fc200c31.558f3",
+        "x": 131,
+        "y": 167,
+        "wires": [
+            [
+                "1d935fa5.fed6f"
+            ]
+        ]
+    },
+    {
+        "id": "f6080d4e.52489",
+        "type": "mqtt in",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Brightness",
+        "qos": "2",
+        "broker": "fc200c31.558f3",
+        "x": 131,
+        "y": 287,
+        "wires": [
+            [
+                "bfa7eb5c.794a48"
+            ]
+        ]
+    },
+    {
+        "id": "5b1b6790.87ac68",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Saturation",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 1151,
+        "y": 227,
+        "wires": []
+    },
+    {
+        "id": "9289de57.7dfe1",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Brightness",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 1151,
+        "y": 347,
+        "wires": []
+    },
+    {
+        "id": "97a80db9.9f12f",
+        "type": "homekit-service",
+        "z": "d6f11351.3cf3",
+        "accessory": "4cff8759.6cb068",
+        "name": "NRLed Lightbulb",
+        "serviceName": "Lightbulb",
+        "x": 451,
+        "y": 267,
+        "wires": [
+            [
+                "214dbe77.02d562",
+                "4ee8bbe4.b177b4",
+                "6f4281b4.0138d",
+                "106dde98.763cb1"
+            ]
+        ]
+    },
+    {
+        "id": "214dbe77.02d562",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "on bool to int",
+        "func": "msg.payload = msg.payload.On;\nif (msg.payload) msg.payload = 1;\nif (!msg.payload) msg.payload = 0;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 711,
+        "y": 467,
+        "wires": [
+            [
+                "3a4ffe01.32bee2"
+            ]
+        ]
+    },
+    {
+        "id": "9707506d.d59d2",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Power",
+        "qos": "",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 1141,
+        "y": 467,
+        "wires": []
+    },
+    {
+        "id": "ca5c81b4.77ae8",
+        "type": "mqtt in",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Power",
+        "qos": "2",
+        "broker": "fc200c31.558f3",
+        "x": 111,
+        "y": 407,
+        "wires": [
+            [
+                "133a2bc3.74f0d4"
+            ]
+        ]
+    },
+    {
+        "id": "133a2bc3.74f0d4",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "msg -> On",
+        "func": "msg.payload = msg.payload * 1;\nif (msg.payload >= 0) {\n    msg.payload = { \"On\" : msg.payload};\n    return msg;    \n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 131,
+        "y": 467,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bfa7eb5c.794a48",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "msg -> Brightness",
+        "func": "msg.payload = msg.payload * 1;\nif (msg.payload >= 0) {\n    msg.payload = { \"Brightness\" : msg.payload};\n    return msg;    \n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 151,
+        "y": 347,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1d935fa5.fed6f",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "msg -> Saturation",
+        "func": "msg.payload = msg.payload * 1;\nif (msg.payload >= 0) {\n    msg.payload = { \"Saturation\" : msg.payload};\n    return msg;    \n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 151,
+        "y": 227,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "68fbc56d.f34d2c",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "msg -> Hue",
+        "func": "msg.payload = msg.payload * 1;\nif (msg.payload >= 0) {\n    msg.payload = { \"Hue\" : msg.payload};\n    return msg;    \n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 131,
+        "y": 107,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "106dde98.763cb1",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "Hue -> msg",
+        "func": "if (msg.payload.Hue >= 0) {\nmsg.payload = msg.payload.Hue;\nreturn msg;    \n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 711,
+        "y": 107,
+        "wires": [
+            [
+                "92ce27f9.702cd8"
+            ]
+        ]
+    },
+    {
+        "id": "6f4281b4.0138d",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "Saturation -> msg",
+        "func": "if (msg.payload.Saturation >= 0) {\n    msg.payload = msg.payload.Saturation;\nreturn msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 731,
+        "y": 227,
+        "wires": [
+            [
+                "5b1b6790.87ac68"
+            ]
+        ]
+    },
+    {
+        "id": "4ee8bbe4.b177b4",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "Brightness -> msg",
+        "func": "if (msg.payload.Brightness >= 0) {\n    msg.payload = msg.payload.Brightness;\nreturn msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 731,
+        "y": 347,
+        "wires": [
+            [
+                "9289de57.7dfe1"
+            ]
+        ]
+    },
+    {
+        "id": "3a4ffe01.32bee2",
+        "type": "switch",
+        "z": "d6f11351.3cf3",
+        "name": "ignore null payload",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "0",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "outputs": 1,
+        "x": 891,
+        "y": 467,
+        "wires": [
+            [
+                "9707506d.d59d2"
+            ]
+        ]
+    },
+    {
+        "id": "dbf6528a.dbd5a",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Red",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 611,
+        "y": 567,
+        "wires": []
+    },
+    {
+        "id": "26f232f3.b321ee",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Green",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 621,
+        "y": 667,
+        "wires": []
+    },
+    {
+        "id": "90ef584f.cb1ac8",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Blue",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 611,
+        "y": 767,
+        "wires": []
+    },
+    {
+        "id": "7668f.4000b971c",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "100",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 451,
+        "y": 547,
+        "wires": [
+            [
+                "dbf6528a.dbd5a"
+            ]
+        ]
+    },
+    {
+        "id": "9f56c9a2.a0a3c8",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "800",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 451,
+        "y": 587,
+        "wires": [
+            [
+                "dbf6528a.dbd5a"
+            ]
+        ]
+    },
+    {
+        "id": "ce4d7026.6a505",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "100",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 451,
+        "y": 647,
+        "wires": [
+            [
+                "26f232f3.b321ee"
+            ]
+        ]
+    },
+    {
+        "id": "84aa891b.0e0b38",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "750",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 451,
+        "y": 687,
+        "wires": [
+            [
+                "26f232f3.b321ee"
+            ]
+        ]
+    },
+    {
+        "id": "b170d1fa.63034",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "250",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 451,
+        "y": 747,
+        "wires": [
+            [
+                "90ef584f.cb1ac8"
+            ]
+        ]
+    },
+    {
+        "id": "f47aaf71.4b734",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "750",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 451,
+        "y": 787,
+        "wires": [
+            [
+                "90ef584f.cb1ac8"
+            ]
+        ]
+    },
+    {
+        "id": "755cdfa0.15d68",
+        "type": "mqtt in",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Hue",
+        "qos": "2",
+        "broker": "fc200c31.558f3",
+        "x": 131,
+        "y": 1087,
+        "wires": [
+            [
+                "1753ab19.93bba5",
+                "43a1051f.5dc8cc"
+            ]
+        ]
+    },
+    {
+        "id": "56189b55.17e274",
+        "type": "mqtt in",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Saturation",
+        "qos": "2",
+        "broker": "fc200c31.558f3",
+        "x": 151,
+        "y": 1147,
+        "wires": [
+            [
+                "1753ab19.93bba5",
+                "43a1051f.5dc8cc"
+            ]
+        ]
+    },
+    {
+        "id": "79baef2f.14579",
+        "type": "mqtt in",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Brightness",
+        "qos": "2",
+        "broker": "fc200c31.558f3",
+        "x": 151,
+        "y": 1207,
+        "wires": [
+            [
+                "1753ab19.93bba5",
+                "43a1051f.5dc8cc"
+            ]
+        ]
+    },
+    {
+        "id": "8851051.9e3e5f8",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "RGB to HSL",
+        "func": "// calc RGB and HSV based on an input\n\nmsg.payload = msg.payload * 1;\n\n// only if there's a real payload\nif ( msg.payload >= 0 ) {\n\n    var res = msg.topic.split(\"-\");\n    msg.topic = res[1];\n    \n    var changeType = \"\";\n    \n    // collect new value\n    if ( msg.topic == \"Red\" ) {\n        context.red = msg.payload;\n    } else if ( msg.topic == \"Green\" ) {\n        context.green = msg.payload;\n    } else if ( msg.topic == \"Blue\" ) {\n        context.blue = msg.payload;\n    } \n    \n    // if RGB, calc HSV\n    // and return all 3\n    \n    var r, g, b;\n    \n\tr = context.red / 1023;\n\tg = context.green / 1023;\n\tb = context.blue / 1023;\n\n\tvar cMax, cMin, delta;\n\tcMax = Math.max(r, g, b);\n\tcMin = Math.min(r, g, b);\n\t\n\tdelta = cMax - cMin;\n\t\n\tvar hue, sat, lit;\n\t\n\tif ( delta === 0 ) {\n\t\thue = 0; // or undefined\n\t} else if ( cMax == r ) {\n\t\thue = ( (g - b)/delta) % 6;\n\t} else if ( cMax == g ) {\n\t\thue = ( (b - r)/delta) + 2;\n\t} else if ( cMax == b ) {\n\t\thue = ( (r - g)/delta ) + 4;\n\t}\n\t\n\thue = hue * 60; // 0..359, hopefully\n\t\n\tlit = (cMax + cMin ) / 2; // 0..1\n\t\n\t//0..1\n\t// original math\n\tif ( delta === 0 ) {\n\t\tsat = 0;\n\t} else {\n\t\tsat = delta / ( 1 - Math.abs(2 * lit - 1));\n\t}\n\t\n\t// this is from https://en.wikipedia.org/wiki/HSL_and_HSV\n\tif ( lit <= 0.5 ) {\n\t\tsat = delta / ( 2 * lit );\n\t} else {\n\t\tsat = delta / ( 2 - 2 * lit );\n\t}\n\t\n\tcontext.hue = Math.floor(hue); // 0 to 359\n\tcontext.saturation = Math.floor(sat * 100); // 0 to 100%\n\tcontext.brightness = Math.floor(lit * 100); // 0 to 100%\n    \n    msg.hue = context.hue;\n    msg.saturation = context.saturation;\n    msg.brightness = context.brightness;\n    \n    return msg;\n\n} else {\n    return; // no msg\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 595,
+        "y": 986,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1753ab19.93bba5",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "get HSV 0..1",
+        "func": "\nmsg.payload = msg.payload * 1.000;\n\n// only if there's a real payload\nif ( msg.payload >= 0 ) {\n\n    var res = msg.topic.split(\"-\");\n    msg.topic = res[1];\n    \n    var changeType = \"\";\n    \n    // collect new value\n    if ( msg.topic == \"Hue\" ) {\n        context.hue = msg.payload;\n    } else if ( msg.topic == \"Saturation\" ) {\n        context.saturation = msg.payload / 100.000;\n    } else if ( msg.topic == \"Brightness\" ) {\n        context.brightness = msg.payload / 100.000;\n    }\n    \n    msg.payload = { h: context.hue, s: context.saturation, v: context.brightness};\n    \n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 391,
+        "y": 1147,
+        "wires": [
+            [
+                "fcd69c63.53558",
+                "c5cc31b7.dcbf2"
+            ]
+        ]
+    },
+    {
+        "id": "f837b04b.7f27e",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "120",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 831,
+        "y": 587,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "49212ec9.39bf4",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Hue",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 991,
+        "y": 607,
+        "wires": []
+    },
+    {
+        "id": "2f31cd6b.ece592",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "60",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 831,
+        "y": 547,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8f496b50.f13da8",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "240",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 831,
+        "y": 627,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "186790b5.76d57f",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "300",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 834,
+        "y": 667,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "dbf03fa8.fa249",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Saturation",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 1011,
+        "y": 747,
+        "wires": []
+    },
+    {
+        "id": "8e828b79.40b438",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "30",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 831,
+        "y": 727,
+        "wires": [
+            [
+                "dbf03fa8.fa249"
+            ]
+        ]
+    },
+    {
+        "id": "b3d161ea.55aad",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "75",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 831,
+        "y": 767,
+        "wires": [
+            [
+                "dbf03fa8.fa249"
+            ]
+        ]
+    },
+    {
+        "id": "64fafe71.fd5ae",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Brightness",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 1011,
+        "y": 847,
+        "wires": []
+    },
+    {
+        "id": "e3639714.aea9f8",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "40",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 831,
+        "y": 827,
+        "wires": [
+            [
+                "64fafe71.fd5ae"
+            ]
+        ]
+    },
+    {
+        "id": "c0ce7d67.84af8",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "80",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 831,
+        "y": 867,
+        "wires": [
+            [
+                "64fafe71.fd5ae"
+            ]
+        ]
+    },
+    {
+        "id": "fcd69c63.53558",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "HSV to RGB 0..1 ",
+        "func": "   \n\n// this is from\n// http://stackoverflow.com/questions/3018313/algorithm-to-convert-rgb-to-hsv-and-hsv-to-rgb-in-range-0-255-for-both\n\n\nvar hue, sat, val;\n\n\thue = msg.payload.h; // 0 to 359\n\tsat = msg.payload.s; // 0 to 1\n\tvalue = msg.payload.v; // 0 to 1\n\t\n\t//rgb is 0..1\n\nvar red, green, blue;\n\n\n    var H = hue, S = sat, V = value,\n            P, Q, T,\n            fract;\n\n    (H == 360.00)?(H = 0.00):(H /= 60.00);\n    \n    fract = H - Math.floor(H);\n\n    P = V*(1.00 - S);\n    Q = V*(1.00 - S*fract);\n    T = V*(1.00 - S*(1.00 - fract));\n\n    if      (0.0 <= H && H < 1.0) {\n        //RGB = (rgb){.r = V, .g = T, .b = P};\n        red = V;\n        green = T;\n        blue = P;\n    } else if (1.0 <= H && H < 2.0) {\n        // RGB = (rgb){.r = Q, .g = V, .b = P};\n        red = Q;\n        green = V;\n        blue = P;\n    } else if (2.0 <= H && H < 3.0) {\n        // RGB = (rgb){.r = P, .g = V, .b = T};\n        red = P;\n        green = V;\n        blue = T;\n    } else if (3.0 <= H && H < 4.0) {\n        // RGB = (rgb){.r = P, .g = Q, .b = V};\n        red = P;\n        green = Q;\n        blue = V;\n    } else if (4.0 <= H && H < 5.0) {\n        // RGB = (rgb){.r = T, .g = P, .b = V};\n        red = T;\n        green = P;\n        blue = V;\n    } else if (5.0 <= H && H < 6.0 ) {\n        // RGB = (rgb){.r = V, .g = P, .b = Q};\n        red = V;\n        green = P;\n        blue = Q;\n    } else {\n        // RGB = (rgb){.r = 0.0, .g = 0.0, .b = 0.0};\n        red = 0;\n        green = 0;\n        blue = 0;\n    }\n    \n    msg.payload = {r : red , g: green , b: blue , a: 1};\n    \n    return msg;\n    ",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 611,
+        "y": 1147,
+        "wires": [
+            [
+                "1af1523b.77269e",
+                "d886d6ac.a29998"
+            ]
+        ]
+    },
+    {
+        "id": "1af1523b.77269e",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "RGB 0..1 to 1023",
+        "func": "msg.payload.r *= 1023;\nmsg.payload.g *= 1023;\nmsg.payload.b *= 1023;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 831,
+        "y": 1147,
+        "wires": [
+            [
+                "b363860d.c66fa8",
+                "e3a73949.943798",
+                "e1307c91.5c90c",
+                "db854b6d.ccbcf8"
+            ]
+        ]
+    },
+    {
+        "id": "803938f.5c787c8",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Red",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 1171,
+        "y": 1107,
+        "wires": []
+    },
+    {
+        "id": "b363860d.c66fa8",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "get R",
+        "func": "msg.payload = msg.payload.r;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1011,
+        "y": 1107,
+        "wires": [
+            [
+                "803938f.5c787c8"
+            ]
+        ]
+    },
+    {
+        "id": "c1f82fb4.3407a",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Green",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 1181,
+        "y": 1167,
+        "wires": []
+    },
+    {
+        "id": "842442f7.cfa41",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Blue",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 1171,
+        "y": 1227,
+        "wires": []
+    },
+    {
+        "id": "e3a73949.943798",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "get G",
+        "func": "msg.payload = msg.payload.g;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1011,
+        "y": 1167,
+        "wires": [
+            [
+                "c1f82fb4.3407a"
+            ]
+        ]
+    },
+    {
+        "id": "e1307c91.5c90c",
+        "type": "function",
+        "z": "d6f11351.3cf3",
+        "name": "get B",
+        "func": "msg.payload = msg.payload.b;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1011,
+        "y": 1227,
+        "wires": [
+            [
+                "842442f7.cfa41"
+            ]
+        ]
+    },
+    {
+        "id": "43a1051f.5dc8cc",
+        "type": "debug",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "false",
+        "x": 391,
+        "y": 1207,
+        "wires": []
+    },
+    {
+        "id": "14311b7a.154595",
+        "type": "mqtt in",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Power",
+        "qos": "2",
+        "broker": "fc200c31.558f3",
+        "x": 131,
+        "y": 1267,
+        "wires": [
+            [
+                "43a1051f.5dc8cc"
+            ]
+        ]
+    },
+    {
+        "id": "c5cc31b7.dcbf2",
+        "type": "debug",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "payload",
+        "x": 544,
+        "y": 1084,
+        "wires": []
+    },
+    {
+        "id": "d886d6ac.a29998",
+        "type": "debug",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "true",
+        "x": 782,
+        "y": 1077,
+        "wires": []
+    },
+    {
+        "id": "db854b6d.ccbcf8",
+        "type": "debug",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "true",
+        "x": 993,
+        "y": 1019,
+        "wires": []
+    },
+    {
+        "id": "efe81540.e76108",
+        "type": "comment",
+        "z": "d6f11351.3cf3",
+        "name": "Convert HSV 0..1 to RGB 0..1023",
+        "info": "",
+        "x": 188,
+        "y": 1036,
+        "wires": []
+    },
+    {
+        "id": "64794808.e30528",
+        "type": "mqtt out",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "LED01-Power",
+        "qos": "0",
+        "retain": "true",
+        "broker": "fc200c31.558f3",
+        "x": 268,
+        "y": 877,
+        "wires": []
+    },
+    {
+        "id": "f42c5764.2bdf28",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 147,
+        "y": 817,
+        "wires": [
+            [
+                "64794808.e30528"
+            ]
+        ]
+    },
+    {
+        "id": "b7ab61eb.43dae",
+        "type": "inject",
+        "z": "d6f11351.3cf3",
+        "name": "",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 124,
+        "y": 935,
+        "wires": [
+            [
+                "64794808.e30528"
+            ]
+        ]
+    },
+    {
+        "id": "fc200c31.558f3",
+        "type": "mqtt-broker",
+        "z": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "4cff8759.6cb068",
+        "type": "homekit-accessory",
+        "z": "",
+        "accessoryName": "NRLed",
+        "pinCode": "111-11-111",
+        "port": "",
+        "manufacturer": "Default Manufacturer",
+        "model": "Default Model",
+        "serialNo": "Default Serial Number"
+    }
+]
