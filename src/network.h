@@ -65,12 +65,12 @@ void setup_wifi() {
   WiFiManagerParameter custom_device_role("role", "role FAN or SWITCH", device_role, 10);
   WiFiManagerParameter custom_mqtt_nickname("nickname", "mqtt nickname", mqtt_nickname, 20);
 
-  WiFiManagerParameter custom_pinLED("LEDpin", "LED pin 13", ch_pinLED, 3);
+  WiFiManagerParameter custom_pinLED("LEDpin", "LED pin 2", ch_pinLED, 3);
   WiFiManagerParameter custom_pinButton("ButtonPin", "Button pin 0", ch_pinButton, 3);
 
-  WiFiManagerParameter custom_pinRed("Redpin", "Red pin 13", ch_pinRed, 3);
+  WiFiManagerParameter custom_pinRed("Redpin", "Red pin 12", ch_pinRed, 3);
   WiFiManagerParameter custom_pinGrn("Grnpin", "Grn pin 13", ch_pinGrn, 3);
-  WiFiManagerParameter custom_pinBlu("Blupin", "Blu pin 13", ch_pinBlu, 3);
+  WiFiManagerParameter custom_pinBlu("Blupin", "Blu pin 14", ch_pinBlu, 3);
 
   //add all your parameters here
   wifiManager.addParameter(&custom_mqtt_server);
@@ -194,6 +194,22 @@ void setup_wifi() {
   strcpy(BLU_FEED, mqtt_nickname);
   strcat(BLU_FEED, "-");
   strcat(BLU_FEED, BLU_FEED_SUFFIX);
+
+  strcpy(HUE_FEED, mqtt_nickname);
+  strcat(HUE_FEED, "-");
+  strcat(HUE_FEED, HUE_FEED_SUFFIX);
+
+  strcpy(SAT_FEED, mqtt_nickname);
+  strcat(SAT_FEED, "-");
+  strcat(SAT_FEED, SAT_FEED_SUFFIX);
+
+  strcpy(VAL_FEED, mqtt_nickname);
+  strcat(VAL_FEED, "-");
+  strcat(VAL_FEED, VAL_FEED_SUFFIX);
+
+  strcpy(POWER_FEED, mqtt_nickname);
+  strcat(POWER_FEED, "-");
+  strcat(POWER_FEED, POWER_FEED_SUFFIX);
 
   setFeaturesFromRole();
 

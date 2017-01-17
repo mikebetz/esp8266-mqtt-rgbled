@@ -20,13 +20,14 @@ void setFeaturesFromRole() {
 
   mqtt_port_int = atoi(mqtt_port);
 
-  pinLED = atoi(ch_pinLED);
+  //pinLED = atoi(ch_pinLED);
 
   pinButton = atoi(ch_pinButton);
 
   pinRed = atoi(ch_pinRed);
-  pinGrn = atoi(ch_pinRed);
-  pinBlu = atoi(ch_pinRed);
+  pinGrn = atoi(ch_pinGrn);
+  pinBlu = atoi(ch_pinBlu);
+
 
   pinMode( pinButton, INPUT);
 
@@ -94,19 +95,19 @@ void readconfig() {
           }
 
           if ( json.containsKey("pinRed") ) {
-            strcpy(ch_pinLED, json["pinRed"]);
+            strcpy(ch_pinRed, json["pinRed"]);
             Serial.print("Red pin is ");
             Serial.println(ch_pinRed);
           }
 
           if ( json.containsKey("pinGrn") ) {
-            strcpy(ch_pinLED, json["pinGrn"]);
+            strcpy(ch_pinGrn, json["pinGrn"]);
             Serial.print("Green pin is ");
             Serial.println(ch_pinGrn);
           }
 
           if ( json.containsKey("pinBlu") ) {
-            strcpy(ch_pinLED, json["pinBlu"]);
+            strcpy(ch_pinBlu, json["pinBlu"]);
             Serial.print("Blue pin is ");
             Serial.println(ch_pinBlu);
           }
@@ -136,10 +137,13 @@ void setup() {
 
   Serial.begin(115200);
 
+  if (pinLED >= 0) {
+    pinMode( pinLED, OUTPUT);
+  }
+
+  ticker_control.attach(0.5, toggle_LED);
+
   readconfig();
-
-  set_LED( LEDOn ); // off
-
 
   setup_wifi(); // network.h
 
@@ -152,8 +156,9 @@ void setup() {
   mqtt_reconnect(); // establish MQTT for first time
   //mqtt_client.loop();
 
-  set_LED(1 - LEDOn ); // turn LED off -- led.h
+  ticker_control.detach();
 
+  set_LED( LEDOn ); // turn LED off -- led.h
 
 }
 
@@ -175,7 +180,7 @@ void loop() {
 			longPressActive = true;
       // LONG PRESS STARTED
       Serial.println("long press start");
-      digitalWrite(pinLED, LEDOn);
+      ticker_control.attach(0.3, toggle_LED);
 		}
 
 	} else {
@@ -187,6 +192,7 @@ void loop() {
 				longPressActive = false;
         // LONG PRESS ENDED
         Serial.println("long press end");
+
         WiFiManager wifiManager;
 
         //reset saved settings
@@ -206,16 +212,17 @@ void loop() {
         Serial.println("version F 2017-01-07");
 
 
-        if (mqtt_client.connected() ) {
+        //if (mqtt_client.connected() ) {
           //char msg[10];
           //snprintf (msg, 10, "%i", current_relay_power);
 
           //mqtt_client.publish(POWER_FEED, msg);
-        }
+        //}
 
 			}
 			buttonActive = false;
-      digitalWrite(pinLED, 1 - LEDOn);
+
+      //digitalWrite(pinLED, 1 - LEDOn);
     }
 
   } // button was up
@@ -230,6 +237,5 @@ void loop() {
 
   // handle subscription changes
   mqtt_client.loop();
-
 
 }
